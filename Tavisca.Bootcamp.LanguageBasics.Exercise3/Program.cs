@@ -37,290 +37,113 @@ namespace Tavisca.Bootcamp.LanguageBasics.Exercise1
             Console.WriteLine($"Diet plan = [{string.Join(", ", dietPlans)}]");
             Console.WriteLine(result);
         }
-
+        public static List<int> MaxMeal(List<int> index, int[] meal)
+        {
+            int i;
+            int max = int.MinValue;
+            for (i = 0; i < index.Count; i++)
+            {
+                if (meal[index[i]] > max)
+                    max = meal[index[i]];
+            }
+            List<int> maxnut = new List<int>();
+            for (i = 0; i < index.Count; i++)
+            {
+                if (meal[index[i]] == max)
+                    maxnut.Add(index[i]);
+            }
+            return maxnut;
+        }
+        public static List<int> MinMeal(List<int> index, int[] meal)
+        {
+            int min = int.MaxValue;
+            int i;
+            for (i = 0; i < index.Count; i++)
+            {
+                if (meal[index[i]] <min)
+                    min = meal[index[i]];
+            }
+            List<int> minnut = new List<int>();
+            for (i = 0; i < index.Count; i++)
+            {
+                if (meal[index[i]] == min)
+                    minnut.Add(index[i]);
+            }
+            return minnut;
+        }
+        public static int[] calorie(int[] protein, int[] carbs, int[] fat)
+        {
+            int i;
+            int[] a = new int[protein.Length];
+            for (i = 0; i < fat.Length; i++)
+            {
+                int c = (fat[i] * 9) + (protein[i] * 5) + (carbs[i] * 5);
+                a[i] = c;
+            }
+            return a;
+        }
         public static int[] SelectMeals(int[] protein, int[] carbs, int[] fat, string[] dietPlans)
         {
-            int i,j,k;
-            
-            int min = int.MaxValue;
-            int max = int.MinValue;
-            for (i=0;i<protein.Length;i++)
-            {
-                if (protein[i] > max)
-                    max = protein[i];
-                if (protein[i] < min)
-                    min = protein[i];
-            }
-            List<int> maxprotein = new List<int>();
-            List<int> minprotein = new List<int>();
-            for (i = 0; i < protein.Length; i++)
-            {
-            if(protein[i]==min)
-                {
-                    minprotein.Add(i);
-                }
-            else if(protein[i]==max)
-                {
-                    maxprotein.Add(i);
-                }
-            }
-            min = int.MaxValue;
-            max = int.MinValue;
-            for (i = 0; i < carbs.Length; i++)
-            {
-                if (carbs[i] > max)
-                    max = carbs[i];
-                if (carbs[i] < min)
-                    min = carbs[i];
-            }
-            List<int> maxcarbs = new List<int>();
-            List<int> mincarbs = new List<int>();
-            for (i = 0; i < carbs.Length; i++)
-            {
-                if (carbs[i] == min)
-                {
-                    mincarbs.Add(i);
-                }
-                else if (carbs[i] == max)
-                {
-                    maxcarbs.Add(i);
-                }
-            }
-            min = int.MaxValue;
-            max = int.MinValue;
-            for (i = 0; i < fat.Length; i++)
-            {
-                if (fat[i] > max)
-                    max = fat[i];
-                if (fat[i] < min)
-                    min = fat[i];
-            }
-            List<int> maxfat = new List<int>();
-            List<int> minfat = new List<int>();
-            for (i = 0; i < fat.Length; i++)
-            {
-                if (fat[i] == min)
-                {
-                    minfat.Add(i);
-                }
-                else if (fat[i] == max)
-                {
-                    maxfat.Add(i);
-                }
-            }
-            int c = 0;
-            max = int.MinValue;
-            min = int.MaxValue;
-            List<int> cal = new List<int>();
-            for (i = 0; i < fat.Length; i++)
-            {
-                c = (fat[i] * 9) + (protein[i] * 5) + (carbs[i] * 5);
-                cal.Add(c);
-                if (c > max)
-                    max = c;
-                if (c < min)
-                    min = c;
-
-            }
-            List<int> maxcal = new List<int>();
-            List<int> mincal = new List<int>();
-            for (i = 0; i < cal.Count; i++)
-            {
-                if (cal[i] == min)
-                {
-                    mincal.Add(i);
-                }
-                else if (cal[i] == max)
-                {
-                    maxcal.Add(i);
-                }
-            }
+            int i,j;
             int[] answer = new int[dietPlans.Length];
-            for (i=0;i< dietPlans.Length;i++)
+            for (i = 0; i < dietPlans.Length; i++)
             {
-                List<int> output;
+                
                 if (dietPlans[i].Length == 0)
                 {
                     answer[i] = 0;
                     continue;
                 }
-
-                switch (dietPlans[i][0])
-                {
+                List<int> output = Enumerable.Range(0, fat.Length).ToList();
+                for (j = 0; j < dietPlans[i].Length; j++)
+                { 
+                   switch (dietPlans[i][j])
+                   {
                     case 'C':
-                        output = maxcarbs.ToList();
+                        output = MaxMeal(output, carbs).ToList();
                         break;
                     case 'c':
-                        output = mincarbs.ToList();
+                        output = MinMeal(output, carbs).ToList();
                         break;
                     case 'P':
-                        output = maxprotein.ToList();
+                        output = MaxMeal(output, protein).ToList();
                         break;
                     case 'p':
-                        output = minprotein.ToList();
+                        output = MinMeal(output, protein).ToList();
                         break;
                     case 'F':
-                        output = maxfat.ToList();
+                        output = MaxMeal(output, fat).ToList();
                         break;
                     case 'f':
-                        output = minfat.ToList();
+                        output = MinMeal(output, fat).ToList();
                         break;
                     case 'T':
-                        output = maxcal.ToList();
+                        output = MaxMeal(output, calorie(protein, carbs, fat)).ToList();
                         break;
                     case 't':
-                        output = mincal.ToList();
+                        output = MinMeal(output, calorie(protein, carbs, fat)).ToList();
                         break;
                     default:
-                        output = mincal.ToList();
+                        //output = mincal.ToList();
                         break;
                 }
-                if (output.Count==1 || dietPlans[i].Length==1)
+                if (output.Count == 1)
                 {
                     answer[i] = output[0];
-                    continue;
-                }
-                k = i;
-                for (j=1;j< dietPlans[k].Length;j++)
-                {
-                    List<int> sample = new List<int>();
-                    switch (dietPlans[k][j])
-                    { 
-                        case 'C':
-                            max = int.MinValue;
-                            for (i = 0; i < output.Count; i++)
-                                {
-                                if (carbs[output[i]] > max)
-                                    max = carbs[output[i]];
-                                }
-                            for (i = 0; i < output.Count; i++)
-                            {
-                                if (carbs[output[i]] == max)
-                                    sample.Add(output[i]);
-                            }
-                            output = sample.ToList();
-                            break;
-                        case 'c':
-                            min = int.MaxValue;
-                            for (i = 0; i < output.Count; i++)
-                            {
-                                if (carbs[output[i]] <min)
-                                    min = carbs[output[i]];
-                            }
-                            for (i = 0; i < output.Count; i++)
-                            {
-                                if (carbs[output[i]] == min)
-                                    sample.Add(output[i]);
-                            }
-                            output = sample.ToList();
-                          
-                            break;
-                        case 'P':
-                            max = int.MinValue;
-                            for (i = 0; i < output.Count; i++)
-                            {
-                                if (protein[output[i]] > max)
-                                    max = protein[output[i]];
-                            }
-                            for (i = 0; i < output.Count; i++)
-                            {
-                                if (protein[output[i]] == max)
-                                    sample.Add(output[i]);
-                            }
-                            output = sample.ToList();
-                            break;
-                        case 'p':
-                            min = int.MaxValue;
-                            for (i = 0; i < output.Count; i++)
-                            {
-                                if (protein[output[i]] < min)
-                                    min = protein[output[i]];
-                            }
-                            for (i = 0; i < output.Count; i++)
-                            {
-                                if (protein[output[i]] == min)
-                                    sample.Add(output[i]);
-                            }
-                            output = sample.ToList();
-                            break;
-                        case 'F':
-                            
-                            max = int.MinValue;
-                            for (i = 0; i < output.Count; i++)
-                            {
-                                
-                                if (fat[output[i]] > max)
-                                    max = fat[output[i]];
-                            }
-                            for (i = 0; i < output.Count; i++)
-                            {
-                                if (fat[output[i]] == max)
-                                    sample.Add(output[i]);
-                            }
-                            output = sample.ToList();
-                           
-                            break;
-                        case 'f':
-                            min = int.MaxValue;
-                            for (i = 0; i < output.Count; i++)
-                            {
-                                if (fat[output[i]] < min)
-                                    min = fat[output[i]];
-                            }
-                            for (i = 0; i < output.Count; i++)
-                            {
-                                if (fat[output[i]] == min)
-                                    sample.Add(output[i]);
-                            }
-                            output = sample.ToList();
-                            break;
-                        case 'T':
-                            max = int.MinValue;
-                            for (i = 0; i < output.Count; i++)
-                            {
-                                if (cal[output[i]] > max)
-                                    max = cal[output[i]];
-                            }
-                            for (i = 0; i < output.Count; i++)
-                            {
-                                if (cal[output[i]] == max)
-                                    sample.Add(output[i]);
-                            }
-                            output = sample.ToList();
-                            break;
-                        case 't':
-                            min = int.MaxValue;
-                            for (i = 0; i < output.Count; i++)
-                            {
-                                if (cal[output[i]] < min)
-                                    min = cal[output[i]];
-                            }
-                            for (i = 0; i < output.Count; i++)
-                            {
-                                if (cal[output[i]] == min)
-                                    sample.Add(output[i]);
-                            }
-                            output = sample.ToList();
-                            
-                            break;
-                        default:
-                            
-                            break;
-                    }
-                    if (output.Count == 1)
-                    {
-                        answer[k] = output[0];
                         break;
-                    }
-                  if(j==dietPlans[k].Length - 1)
+                }
+                    if (j == dietPlans[i].Length - 1)
                     {
-                        answer[k] = output[0];
+                        answer[i] = output[0];
                         break;
                     }
                 }
-                i = k;
+                   
+                  
+                }
                 
-            }
+                
+            
             return answer;
             
         }
