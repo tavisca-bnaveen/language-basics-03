@@ -46,7 +46,7 @@ namespace Tavisca.Bootcamp.LanguageBasics.Exercise1
                 if (meal[index[i]] > max)
                     max = meal[index[i]];
             }
-            List<int> maxnut = new List<int>();
+            List<int> maxnut = new List<int>(); // maxnut means maximum nutrient
             for (i = 0; i < index.Count; i++)
             {
                 if (meal[index[i]] == max)
@@ -63,7 +63,7 @@ namespace Tavisca.Bootcamp.LanguageBasics.Exercise1
                 if (meal[index[i]] <min)
                     min = meal[index[i]];
             }
-            List<int> minnut = new List<int>();
+            List<int> minnut = new List<int>();// minnut means minimum nutrient
             for (i = 0; i < index.Count; i++)
             {
                 if (meal[index[i]] == min)
@@ -74,13 +74,13 @@ namespace Tavisca.Bootcamp.LanguageBasics.Exercise1
         public static int[] calorie(int[] protein, int[] carbs, int[] fat)
         {
             int i;
-            int[] a = new int[protein.Length];
+            int[] array_calorie = new int[protein.Length];
             for (i = 0; i < fat.Length; i++)
             {
-                int c = (fat[i] * 9) + (protein[i] * 5) + (carbs[i] * 5);
-                a[i] = c;
+                int calorie_value = (fat[i] * 9) + (protein[i] * 5) + (carbs[i] * 5);
+                array_calorie[i] = calorie_value;
             }
-            return a;
+            return array_calorie;
         }
         public static int[] SelectMeals(int[] protein, int[] carbs, int[] fat, string[] dietPlans)
         {
